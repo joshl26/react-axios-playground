@@ -5,19 +5,27 @@ import "./App.css";
 function App() {
   const [people, setPeople] = useState([]);
 
+  // useEffect(() => {
+  //   axios.get("https://swapi.dev/api/people/").then((data) => {
+  //     console.log(data);
+  //     setPeople(data.data?.results);
+  //   });
+  // }, []);
+
   useEffect(() => {
-    axios.get("https://swapi.dev/api/people/").then((data) => {
-      console.log(data);
+    async function fetchData() {
+      const data = await axios.get("https://swapi.dev/api/people/");
       setPeople(data.data?.results);
-    });
-  }, []);
+    }
+    fetchData();
+  });
 
   return (
     <div className="App">
       {people.length ? (
         <>
-          {people.map((person) => (
-            <div>{person.name}</div>
+          {people.map((person, idx) => (
+            <div key={idx}>{person.name}</div>
           ))}
         </>
       ) : (
