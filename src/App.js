@@ -4,6 +4,7 @@ import "./App.css";
 
 function App() {
   const [people, setPeople] = useState([]);
+  const [error, setError] = useState("");
 
   // useEffect(() => {
   //   axios.get("https://swapi.dev/api/people/").then((data) => {
@@ -14,14 +15,19 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      const data = await axios.get("https://swapi.dev/api/people/");
-      setPeople(data.data?.results);
+      try {
+        const data = await axios.get("https://swapi.dev/api/people/");
+        setPeople(data.data?.results);
+      } catch (e) {
+        setError("Something went wrong!");
+      }
     }
     fetchData();
-  });
+  }, []);
 
   return (
     <div className="App">
+      {error && <h3>{error}</h3>}
       {people.length ? (
         <>
           {people.map((person, idx) => (
